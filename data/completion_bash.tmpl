@@ -1,0 +1,25 @@
+_zdargs_{{ .Cmd }}_autocomplete() {
+    local base prog
+    prog="{{ .Cmd }}"
+
+    local cur prev words cword
+    COMPREPLY=()
+    _get_comp_words_by_ref -n : cur prev words cword
+    opts=$(dargs completions -- "$prog" "$prev" "$cur")
+    if [[ $opts ]]; then
+        if [[ $opts = dargs_fzf* ]];then
+            command -v fzf-tmux > /dev/null && fzf_cmd=fzf-tmux || fzf_cmd=fzf
+            IFS=$'\n' COMPREPLY=( $(echo "$opts" | grep -vxF 'dargs_fzf' | $fzf_cmd) )
+        else
+            IFS=$'\n' COMPREPLY=( $opts )
+        fi
+        __ltrim_colon_completions "$cur"
+        return 0
+    fi
+    type $_zdargs_ssh_orig > /dev/null && $_zdargs_ssh_orig "$@"
+    return 0
+}
+
+__load_completion {{ .Cmd }}
+_zdargs_{{ .Cmd }}_orig=$(complete -p {{ .Cmd }} | sed -re 's/.*-F ([^ ]+).*/\1/')
+complete -o filenames -F _zdargs_{{ .Cmd }}_autocomplete "{{ .Cmd }}"

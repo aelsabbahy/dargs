@@ -1,0 +1,16 @@
+_zdargs_{{ .Cmd }}_autocomplete() {
+  opts_s=$(dargs completions -- "${words[1]}" "${words[CURRENT-1]}" "${words[CURRENT]}")
+  if [[ $opts_s = dargs_fzf* ]];then
+    command -v fzf-tmux > /dev/null && fzf_cmd=fzf-tmux || fzf_cmd=fzf
+    opts_s=$(echo "$opts_s" | grep -vxF 'dargs_fzf' | $fzf_cmd)
+  fi
+  opts=( ${(f)opts_s} )
+  if [[ $opts ]]; then
+    compadd "${opts[@]}"
+  fi
+  type $_zdargs_{{ .Cmd }}_orig > /dev/null && $_zdargs_{{ .Cmd }}_orig
+  return 0
+}
+
+_zdargs_{{ .Cmd }}_orig=$_comps[{{ .Cmd }}]
+compdef _zdargs_{{ .Cmd }}_autocomplete "{{ .Cmd }}"
