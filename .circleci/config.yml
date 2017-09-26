@@ -8,6 +8,9 @@ jobs:
     steps:
       - checkout
       - run: echo building
+      - run: go get github.com/mitchellh/gox github.com/golang/dep/cmd/dep
+      - run: which gox
+        #- run: gox -output 'release/dargs_{{.OS}}_{{.Arch}}' -osarch 'linux/amd64 darwin/amd64'
         #      - restore_cache:
         #          key: test_travis-{{ .Branch }}-{{ checksum "glide.lock" }}
         #      - run: find .
