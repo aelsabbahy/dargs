@@ -69,7 +69,7 @@ fi
 
 ## Tutorial
 
-**Note:** This is meant as a walk through. For full sytanx see [manual](#manual)
+**Note:** This section walks through the basics of dargs, for more detailed information, see [manual](#manual)
 
 Now that you have dargs installed, lets use dargs to enhance ssh with ec2 abilities and give packer YAML support.
 

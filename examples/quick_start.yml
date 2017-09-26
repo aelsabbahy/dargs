@@ -1,0 +1,47 @@
+transformers:
+  # expands i-xxxxxxxx -> 10.11.12.13
+  - name: ec2_id
+    # Regex Pattern to match argument against
+    # Regex groups are available as $RE_0 $RE_1 or if named $RE_GROUPNAME
+    match: '^i-[0-9a-z]+$'
+    # cache results for 604800 seconds (1 week)
+    cache: 604800
+    # Use awscli to lookup instance ip
+    command: |
+      aws ec2 describe-instances \
+        --filters 'Name=instance-state-name,Values=running' --instance-ids "$RE_0" \
+        --query 'Reservations[*].Instances[*].[PrivateIpAddress]' --output text
+
+  # Converts instance name to instance id: ec2:instance_name -> i-xxxxxxxx
+  - name: ec2_name
+    match: '^ec2:(?P<name>.+)$'
+    # 5 min cache
+    cache: 300
+    command: |
+      aws ec2 describe-instances \
+        --filters "Name=tag:Name,Values=$RE_name" 'Name=instance-state-name,Values=running' \
+        --query 'Reservations[*].Instances[*].[InstanceId]' --output text | head -1
+
+  # Filters can have side effects, this one converts YAML to JSON
+  - name: yaml2json
+    # match *.yml, *.yaml
+    match: '(.*)\.ya?ml$'
+    command: |
+      # Using ruby to convert
+      ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF))' < $RE_0 > ${RE_1}.json
+      # Replace argument with json name
+      echo ${RE_1}.json
+
+completers:
+  # Allows for ec2:instance_name<tab> expansions
+  - name: ec2_name
+    match: '^ec2:(?P<name_prefix>.+)$'
+    # 2 min
+    cache: 120
+    command: |
+      aws ec2 describe-instances \
+        --filters "Name=tag:Name,Values=${RE_name_prefix}*" \
+                  "Name=instance-state-name,Values=running" \
+        --query "Reservations[*].Instances[*].[Tags[?Key=='Name'].Value]" \
+        --output text | sed -e "s/^/ec2:/"
+
