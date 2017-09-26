@@ -15,7 +15,7 @@ jobs:
         #-   paths:
         #-     - /go/src/github.com/aelsabbahy/test_travis/vendor
         #-     - /go/src/github.com/aelsabbahy/test_travis/.glide
-      - ls /go/pkg/dep/sources
+      - run: ls /go/pkg/dep/sources
         #- run: gox -output 'release/dargs_{{.OS}}_{{.Arch}}' -osarch 'linux/amd64 darwin/amd64'
         #      - restore_cache:
         #          key: test_travis-{{ .Branch }}-{{ checksum "glide.lock" }}
