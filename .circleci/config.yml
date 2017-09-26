@@ -10,7 +10,7 @@ jobs:
       - run: echo building
       - run: go get github.com/mitchellh/gox github.com/golang/dep/cmd/dep
       - restore_cache:
-          key: dargs-{{ checksum "Gopkg.lock" }}-{{ checksum "Gopkg.toml" }}
+          key: dargs-{{ checksum "Gopkg.toml" }}
       - run: dep ensure
         #- save_cache:
         #-   key: test_travis-{{ .Branch }}-{{ checksum "glide.lock" }}
@@ -19,7 +19,7 @@ jobs:
         #-     - /go/src/github.com/aelsabbahy/test_travis/.glide
       - run: ls /go/pkg/dep/sources
       - save_cache:
-          key: dargs-{{ checksum "Gopkg.lock" }}-{{ checksum "Gopkg.toml" }}
+          key: dargs-{{ checksum "Gopkg.toml" }}
           paths:
             - /go/pkg/dep/sources
             - /go/src/github.com/aelsabbahy/dargs/vendor
