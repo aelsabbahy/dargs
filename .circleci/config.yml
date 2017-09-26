@@ -8,15 +8,14 @@ jobs:
     steps:
       - checkout
       - run: echo building
-      - restore_cache:
-          key: github.com/mitchellh/gox-github.com/golang/dep/cmd/dep
       - run: go get github.com/mitchellh/gox github.com/golang/dep/cmd/dep
-      - save_cache:
-          key: github.com/mitchellh/gox-github.com/golang/dep/cmd/dep
-          paths:
-            - /go/bin/gox
-            - /go/bin/dep
-      - run: which gox
+      - run: dep ensure
+        #- save_cache:
+        #-   key: test_travis-{{ .Branch }}-{{ checksum "glide.lock" }}
+        #-   paths:
+        #-     - /go/src/github.com/aelsabbahy/test_travis/vendor
+        #-     - /go/src/github.com/aelsabbahy/test_travis/.glide
+      - ls /go/pkg/dep/sources
         #- run: gox -output 'release/dargs_{{.OS}}_{{.Arch}}' -osarch 'linux/amd64 darwin/amd64'
         #      - restore_cache:
         #          key: test_travis-{{ .Branch }}-{{ checksum "glide.lock" }}
