@@ -28,7 +28,7 @@ jobs:
           name: Create draft release on GitHub
           command: |
             #[[ -n "$CIRCLE_TAG" ]] || exit 0
-            ghr -draft -u "$CIRCLE_PROJECT_USERNAME" "${CIRCLE_TAG}-draft" release/
+            ghr -draft -u "$CIRCLE_PROJECT_USERNAME" "test-draft" release/
 
 
         #      - restore_cache:
