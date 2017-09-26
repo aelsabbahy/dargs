@@ -171,6 +171,8 @@ Dargs commands:
 
 ### The dargs config file: ~/.dargs.yml
 
+**Note:** You can find example dargs config files in the [examples](examples/) folder of this repo.
+
 Dargs configuration consists of four top level keys:
 * **imports**    - imports dargs config from file glob or URLs
 * **transformers** - Transform matching CLI args before executing the command
