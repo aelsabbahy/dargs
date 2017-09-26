@@ -23,7 +23,7 @@ jobs:
           paths:
             - /go/pkg/dep/sources
             - /go/src/github.com/aelsabbahy/dargs/vendor
-        #- run: gox -output 'release/dargs_{{.OS}}_{{.Arch}}' -osarch 'linux/amd64 darwin/amd64'
+      - run: gox -output 'release/dargs_{{.OS}}_{{.Arch}}' -osarch 'linux/amd64 darwin/amd64'
         #      - restore_cache:
         #          key: test_travis-{{ .Branch }}-{{ checksum "glide.lock" }}
         #      - run: find .
