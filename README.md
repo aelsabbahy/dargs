@@ -1,4 +1,5 @@
 # Dargs - Dynamic CLI arguments and completion
+[![Build Status](https://circleci.com/gh/aelsabbahy/dargs.png)](https://circleci.com/gh/aelsabbahy/dargs)
 **
 [![Twitter Follow](https://img.shields.io/twitter/follow/aelsabbahy1.svg?style=social&label=Follow&maxAge=2592000)]()
 [![Blog](https://img.shields.io/badge/follow-blog-brightgreen.svg)](https://medium.com/@aelsabbahy)
