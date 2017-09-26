@@ -6,6 +6,9 @@
 
 # Introduction
 
+**Contributions Needed:** If you have use-cases/configurations that could benefit others, please submit them to the
+[examples](examples/) folder.
+
 <a href="https://asciinema.org/a/AwMi8FkS33bQtna7yTlvAEYwf?autoplay=1" target="_blank"><img src="https://user-images.githubusercontent.com/6783261/30841588-3d75422a-a24b-11e7-8108-238d805dbde6.gif" alt="asciicast"></a>
 
 ## What is Dargs?
