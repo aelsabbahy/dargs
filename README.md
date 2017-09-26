@@ -42,7 +42,7 @@ chmod +rx /usr/local/bin/dargs
 
 OSX:
 ```bash
-curl -L https://github.com/aelsabbahy/dargs/releases/download/v0.0.1/dargs_linux_amd64 -o /usr/local/bin/dargs
+curl -L https://github.com/aelsabbahy/dargs/releases/download/v0.0.1/dargs_darwin_amd64 -o /usr/local/bin/dargs
 chmod +rx /usr/local/bin/dargs
 ```
 
