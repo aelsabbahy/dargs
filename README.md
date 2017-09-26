@@ -33,10 +33,19 @@ go get -u github.com/aelsabbahy/dargs
 ```
 
 If not, download the stand-alone binary
+
+Linux:
 ```bash
-curl some_url
-chmod +rx path
+curl -L https://github.com/aelsabbahy/dargs/releases/download/v0.0.1/dargs_linux_amd64 -o /usr/local/bin/dargs
+chmod +rx /usr/local/bin/dargs
 ```
+
+OSX:
+```bash
+curl -L https://github.com/aelsabbahy/dargs/releases/download/v0.0.1/dargs_linux_amd64 -o /usr/local/bin/dargs
+chmod +rx /usr/local/bin/dargs
+```
+
 
 ### Completions installation
 
