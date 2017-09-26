@@ -5,7 +5,7 @@
 
 # Introduction
 
-<a href="https://asciinema.org/a/4suhr8p42qcn6r7crfzt6cc3e?autoplay=1" target="_blank"><img src="https://cloud.githubusercontent.com/assets/6783261/17330426/ce7ad066-5894-11e6-84ea-29fd4207af58.gif" alt="asciicast"></a>
+<a href="https://asciinema.org/a/AwMi8FkS33bQtna7yTlvAEYwf?autoplay=1" target="_blank"><img src="https://user-images.githubusercontent.com/6783261/30841588-3d75422a-a24b-11e7-8108-238d805dbde6.gif" alt="asciicast"></a>
 
 ## What is Dargs?
 
