@@ -24,28 +24,8 @@ jobs:
             - /go/pkg/dep/sources
             - /go/src/github.com/aelsabbahy/dargs/vendor
       - run: gox -output 'release/dargs_{{.OS}}_{{.Arch}}' -osarch 'linux/amd64 darwin/amd64'
+      # FIXME: Need to figure out workflows to get this to run only on tag pushes
       - run:
           name: Create draft release on GitHub
           command: |
-            [[ -n "$CIRCLE_TAG" ]] || exit 0
-            ghr -draft -u "$CIRCLE_PROJECT_USERNAME" "${CIRCLE_TAG}-draft" release/
-
-
-        #      - restore_cache:
-        #          key: test_travis-{{ .Branch }}-{{ checksum "glide.lock" }}
-        #      - run: find .
-        #        #- run: curl https://glide.sh/get | sh
-        #        #- run: glide install
-        #      - run: time env
-        #      - run: whoami && id
-        #      #- run: glide --help
-        #      - save_cache:
-        #          key: test_travis-{{ .Branch }}-{{ checksum "glide.lock" }}
-        #          paths:
-        #            - /go/src/github.com/aelsabbahy/test_travis/vendor
-        #            - /go/src/github.com/aelsabbahy/test_travis/.glide
-        #      - run: du -hcs vendor/ .glide/
-        #      - run: time find .
-        #      - run: time go build .
-        #      - run: time go test .
-        #      - run: time go run main.go
+            ghr -draft -u "$CIRCLE_PROJECT_USERNAME" "test-draft" release/
