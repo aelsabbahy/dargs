@@ -1,0 +1,28 @@
+---
+version: 2
+jobs:
+  build:
+    docker:
+      - image: golang:1.8.0
+    working_directory: /go/src/github.com/aelsabbahy/dargs
+    steps:
+      - checkout
+      - run: echo building
+        #      - restore_cache:
+        #          key: test_travis-{{ .Branch }}-{{ checksum "glide.lock" }}
+        #      - run: find .
+        #        #- run: curl https://glide.sh/get | sh
+        #        #- run: glide install
+        #      - run: time env
+        #      - run: whoami && id
+        #      #- run: glide --help
+        #      - save_cache:
+        #          key: test_travis-{{ .Branch }}-{{ checksum "glide.lock" }}
+        #          paths:
+        #            - /go/src/github.com/aelsabbahy/test_travis/vendor
+        #            - /go/src/github.com/aelsabbahy/test_travis/.glide
+        #      - run: du -hcs vendor/ .glide/
+        #      - run: time find .
+        #      - run: time go build .
+        #      - run: time go test .
+        #      - run: time go run main.go
