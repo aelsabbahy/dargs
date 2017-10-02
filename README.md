@@ -22,15 +22,15 @@ Features:
 
 For example, using dargs one can define rules to:
 
-* **ssh into an ec2 instance by instance id:**
+* ssh into an ec2 instance by instance id:
 
   `ssh i-xxxxxxxx`
 
-* **Run packer build using YAML file format instead of JSON:**
+* Run packer build using YAML file format instead of JSON:
 
     `packer build demo.yml`
 
-* **ssh completions for AWS ec2 instance names:**
+* ssh completions for AWS ec2 instance names:
 
     `ssh ec2:instance_name<tab>`
 
