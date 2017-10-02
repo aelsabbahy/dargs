@@ -1,0 +1,36 @@
+transformers:
+  - name: test
+    match: 'test:(?P<test>.*)'
+    command:
+      echo "{$RE_test}"
+  - name: test2
+    match: '.*'
+    command:
+      sed -e 's/[{}]/_/g' <<<$RE_0
+  - name: multi
+    match: '.*'
+    command: |
+      echo 'arg1'
+      echo 'arg2'
+  - name: prev
+    match: '.*'
+    prev-match: 'prev'
+    command:
+      echo "true"
+  - name: cache
+    match: '.*'
+    cache: 30
+    command:
+      sleep .15 && echo $RE_0
+completers:
+  - name: test
+    match: '.*'
+    command: |
+      echo "${RE_0}1"
+      echo "${RE_0}2"
+
+commands:
+  - name: /usr/bin/echo
+    transformers:
+      - test
+      - test2

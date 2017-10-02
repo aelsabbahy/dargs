@@ -75,6 +75,7 @@ func initConfig() {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
 		viper.Set("root", path.Dir(cfgFile))
+		viper.Set("config", cfgFile)
 	} else {
 		// Find home directory.
 		home, err := homedir.Dir()
@@ -83,6 +84,7 @@ func initConfig() {
 			os.Exit(1)
 		}
 		viper.Set("root", home)
+		viper.Set("config", path.Join(home, ".dargs.yml"))
 
 		//// Search config in home directory with name ".dargs" (without extension).
 		//viper.AddConfigPath(home)

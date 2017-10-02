@@ -3,6 +3,7 @@ package run
 import (
 	"io/ioutil"
 	"os"
+	"path"
 	"time"
 
 	yaml "gopkg.in/yaml.v2"
@@ -25,6 +26,9 @@ func loadCache(f string) (*cache.Cache, error) {
 }
 
 func saveCache(c *cache.Cache, f string) error {
+	if err := os.MkdirAll(path.Dir(f), 0755); err != nil {
+		return err
+	}
 	d, err := yaml.Marshal(c.Items())
 	if err != nil {
 		return err

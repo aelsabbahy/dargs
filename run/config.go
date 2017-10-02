@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 
 	yaml "gopkg.in/yaml.v2"
@@ -37,8 +38,7 @@ type Command struct {
 
 func AutoLoadConfig() (*Config, error) {
 	// Find home directory.
-	root := viper.GetString("root")
-	return LoadConfig(path.Join(root, ".dargs.yml"))
+	return LoadConfig(viper.GetString("config"))
 }
 
 func mergeConfig(c, nc Config) Config {
@@ -128,7 +128,11 @@ func (c *Config) getTransformers(a ...string) ([]*MatchRunner, error) {
 
 func getConfig(f string) ([]string, error) {
 	if !strings.HasPrefix(f, "http") {
-		return filepath.Glob(f)
+		e, err := homedir.Expand(f)
+		if err != nil {
+			return nil, err
+		}
+		return filepath.Glob(e)
 	}
 	dlRoot := viper.GetString("downloadRoot")
 	if err := os.MkdirAll(dlRoot, 0755); err != nil {
