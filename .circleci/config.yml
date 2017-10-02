@@ -40,11 +40,16 @@ jobs:
             - /go/src/github.com/aelsabbahy/dargs/vendor
       - run: gox -output 'release/dargs_{{.OS}}_{{.Arch}}' -osarch 'linux/amd64 darwin/amd64'
       - run: test/test.sh release/dargs_linux_amd64
+      - persist_to_workspace:
+          root: .
+          paths:
+            - release
 
   deploy:
     <<: *defaults
     steps:
-      - checkout
+      - attach_workspace:
+        at: .
       - run: go get github.com/tcnksm/ghr
       - run:
           name: Create draft release on GitHub
