@@ -24,8 +24,9 @@ jobs:
             - /go/pkg/dep/sources
             - /go/src/github.com/aelsabbahy/dargs/vendor
       - run: gox -output 'release/dargs_{{.OS}}_{{.Arch}}' -osarch 'linux/amd64 darwin/amd64'
-      # FIXME: Need to figure out workflows to get this to run only on tag pushes
-      - run:
-          name: Create draft release on GitHub
-          command: |
-            ghr -draft -u "$CIRCLE_PROJECT_USERNAME" "test-draft" release/
+      - run: test/test.sh
+        #      # FIXME: Need to figure out workflows to get this to run only on tag pushes
+        #      - run:
+        #          name: Create draft release on GitHub
+        #          command: |
+        #            ghr -draft -u "$CIRCLE_PROJECT_USERNAME" "test-draft" release/
