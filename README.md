@@ -16,8 +16,8 @@
 Dargs is a tool that allows you to define dynamic argument transformations and completions for any CLI command.
 
 Features:
-* Use regex to define which CLI argument should be processed.
-* Use any external command as an argument transformer or completer.
+* Use regex to define which CLI argument should be processed
+* Use any external command as an argument transformer or completer
 * Define cache duration for results
 
 For example, using dargs one can define rules to:
