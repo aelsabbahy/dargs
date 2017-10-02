@@ -1,22 +1,37 @@
 ---
 version: 2
+workflows:
+  version: 2
+  build-n-deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+      - deploy:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
+            branches:
+              ignore: /.*/
+
+defaults: &defaults
+  docker:
+    - image: circleci/golang:1.9
+  working_directory: /go/src/github.com/aelsabbahy/dargs
+
 jobs:
   build:
-    docker:
-      - image: circleci/golang:1.9
-    working_directory: /go/src/github.com/aelsabbahy/dargs
+    <<: *defaults
     steps:
       - checkout
       - run: echo building
-      - run: go get github.com/mitchellh/gox github.com/golang/dep/cmd/dep github.com/tcnksm/ghr
+      - run: go get github.com/mitchellh/gox github.com/golang/dep/cmd/dep
       - restore_cache:
           key: dargs-{{ checksum "Gopkg.toml" }}
       - run: dep ensure
-        #- save_cache:
-        #-   key: test_travis-{{ .Branch }}-{{ checksum "glide.lock" }}
-        #-   paths:
-        #-     - /go/src/github.com/aelsabbahy/test_travis/vendor
-        #-     - /go/src/github.com/aelsabbahy/test_travis/.glide
       - run: ls /go/pkg/dep/sources
       - save_cache:
           key: dargs-{{ checksum "Gopkg.toml" }}
@@ -25,8 +40,13 @@ jobs:
             - /go/src/github.com/aelsabbahy/dargs/vendor
       - run: gox -output 'release/dargs_{{.OS}}_{{.Arch}}' -osarch 'linux/amd64 darwin/amd64'
       - run: test/test.sh release/dargs_linux_amd64
-        #      # FIXME: Need to figure out workflows to get this to run only on tag pushes
-        #      - run:
-        #          name: Create draft release on GitHub
-        #          command: |
-        #            ghr -draft -u "$CIRCLE_PROJECT_USERNAME" "test-draft" release/
+
+  deploy:
+    <<: *defaults
+    steps:
+      - checkout
+      - run: go get github.com/tcnksm/ghr
+      - run:
+          name: Create draft release on GitHub
+          command: |
+            ghr -u "$CIRCLE_PROJECT_USERNAME" "$CIRCLE_TAG" release/
