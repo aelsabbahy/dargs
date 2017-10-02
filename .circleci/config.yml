@@ -49,7 +49,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-        at: .
+          at: .
       - run: go get github.com/tcnksm/ghr
       - run:
           name: Create draft release on GitHub
