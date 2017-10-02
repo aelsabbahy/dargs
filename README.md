@@ -13,7 +13,12 @@
 
 ## What is Dargs?
 
-Dargs is a tool that allows you to define dynamic argument replacements and completions for any CLI command.
+Dargs is a tool that allows you to define dynamic argument transformations and completions for any CLI command.
+
+Features:
+* Use regex to define which CLI argument should be processed.
+* Use any external command as an argument transformer or completer.
+* Define cache duration for results
 
 For example, using dargs one can define rules to:
 
@@ -29,6 +34,7 @@ For example, using dargs one can define rules to:
 
     `ssh ec2:instance_name<tab>`
 
+
 ## Installation
 
 If you have go
@@ -40,13 +46,13 @@ If not, download the stand-alone binary
 
 Linux:
 ```bash
-curl -L https://github.com/aelsabbahy/dargs/releases/download/v0.0.1/dargs_linux_amd64 -o /usr/local/bin/dargs
+curl -L https://github.com/aelsabbahy/dargs/releases/download/v0.0.2/dargs_linux_amd64 -o /usr/local/bin/dargs
 chmod +rx /usr/local/bin/dargs
 ```
 
 OSX:
 ```bash
-curl -L https://github.com/aelsabbahy/dargs/releases/download/v0.0.1/dargs_darwin_amd64 -o /usr/local/bin/dargs
+curl -L https://github.com/aelsabbahy/dargs/releases/download/v0.0.2/dargs_darwin_amd64 -o /usr/local/bin/dargs
 chmod +rx /usr/local/bin/dargs
 ```
 
