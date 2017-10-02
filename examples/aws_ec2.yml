@@ -1,0 +1,53 @@
+---
+transformers:
+  # instance ID to ssh params: i-xxxxxx -> -i ~/.ssh/$aws_profile-$key.pem 10.11.12.13
+  # Also accepts $aws_profile:i-xxxxxx
+  - name: ec2_ssh
+    match: '^(?:(?P<profile>[a-z]{2}):)?(?P<id>(i-[0-9a-z]+))$'
+    # 1 week
+    cache: 604800
+    command: |
+      set -e
+      AWS_DEFAULT_PROFILE=${RE_profile:-$AWS_DEFAULT_PROFILE}
+      ret=$(aws ec2 describe-instances \
+        --filters 'Name=instance-state-name,Values=running' \
+        --instance-ids "$RE_id" \
+        --query 'Reservations[*].Instances[*].[KeyName,PrivateIpAddress]' --output text)
+
+      [[ $ret ]] || { echo "ERROR: No running instance found"; exit 1; }
+      key=$(awk '$0=$1'<<<"$ret")
+      key_path=~/.ssh/$AWS_DEFAULT_PROFILE-$key.pem
+      ip=$(awk '$0=$2'<<<"$ret")
+      [[ $ip ]] || { echo "ERROR: No ip found for instance"; exit 1; }
+      [[ -e $key_path ]] || { echo "ERROR: key file '$key_path' does not exist"; exit 1; }
+      # Multi-line, expands into multiple variables
+      echo -e "-i\n$key_path\n$ip"
+  # ec2:instance_name -> i-xxxxxx, or ec2:$aws_profile:instance_name -> i-xxxxxx
+  - name: ec2_name
+    match: '^ec2:(?:(?P<prefix>(?P<profile>[a-z]{2}):)?)(?P<name>.+)$'
+    # 5 min
+    cache: 300
+    command: |
+      set -e
+      AWS_DEFAULT_PROFILE=${RE_profile:-$AWS_DEFAULT_PROFILE}
+      aws ec2 describe-instances \
+        --filters "Name=tag:Name,Values=$RE_name" 'Name=instance-state-name,Values=running' \
+        --query 'Reservations[*].Instances[*].[InstanceId]' --output text | head -1 | sed -e "s/^/$RE_prefix/"
+      exit ${PIPESTATUS[0]}
+  - name: fail
+    match: '.*'
+    cache: 30
+    command: 'echo 1; exit 0'
+completers:
+  # ec2:instance_name or ec2:$aws_profile:instance_name completer
+  - name: ec2_cmpl
+    match: '^(?P<prefix>ec2:(?:(?P<profile>[a-z]{2}):)?)(?P<name_prefix>.+)$'
+    # 2 min
+    cache: 120
+    command: |
+      set -e
+      AWS_DEFAULT_PROFILE=${RE_profile:-$AWS_DEFAULT_PROFILE}
+      aws ec2 describe-instances \
+        --filters "Name=tag:Name,Values=${RE_name_prefix}*" 'Name=instance-state-name,Values=running' \
+        --query "Reservations[*].Instances[*].[Tags[?Key=='Name'].Value]" --output text | sed -e "s/^/$RE_prefix/"
+      exit ${PIPESTATUS[0]}
